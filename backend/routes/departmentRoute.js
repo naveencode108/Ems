@@ -1,6 +1,5 @@
 import express from 'express';
-import router from './authRoute';
-import { addDepartment, deleteDepartment, getAllDepartment, updateDepartment } from '../controllers/departmentController';
+import { addDepartment, deleteDepartment, getAllDepartment, updateDepartment } from '../controllers/departmentController.js';
 
 const router=express.Router();
 

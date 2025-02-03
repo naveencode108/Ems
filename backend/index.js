@@ -4,8 +4,15 @@ import authRoute from './routes/authRoute.js'
 import employeeRoute from './routes/employeeRoute.js'
 import leaveRoute from './routes/leaveRoute.js'
 import departmentRoute from './routes/departmentRoute.js'
+import cors from 'cors';
+import { connectDB } from './config/db.js';
 
 const app=express();
+
+app.use(cors({
+    methods:['GET','POST','PUT','DELETE'],
+    origin:'http://localhost:5173'
+}))
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
@@ -16,6 +23,7 @@ app.use('/api/v1/employee',employeeRoute);
 app.use('/api/v1/leave',leaveRoute);
 app.use('/api/v1/department',departmentRoute);
 
+connectDB();
 
 app.listen(1008,()=>{
     console.log('Server is running..');

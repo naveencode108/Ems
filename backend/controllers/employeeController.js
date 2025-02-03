@@ -1,13 +1,16 @@
-import Department from "../models/Department";
-import Employee from "../models/Employee";
-import User from "../models/User";
+import Department from "../models/Department.js";
+import Employee from "../models/Employee.js";
+import User from "../models/User.js";
 import bcrypt from "bcrypt";
 
 export const getEmployeeByUserId = async (req, res) => {
   try {
     let { id } = req.params;
 
-    if (!id) return res.status(400).json({ success: false, message: "Id is not provided" });
+    if (!id)
+      return res
+        .status(400)
+        .json({ success: false, message: "Id is not provided" });
 
     let employee = await Employee.findOne({ userId: id })
       .populate("userId")
@@ -26,7 +29,7 @@ export const addEmployee = async (req, res) => {
       name,
       email,
       password,
-      departmentId,
+      department,
       dob,
       gender,
       designation,
@@ -38,17 +41,22 @@ export const addEmployee = async (req, res) => {
       !email ||
       !name ||
       !password ||
-      !departmentId ||
+      !department ||
       !dob ||
       !gender ||
       !designation ||
-      !salary
+      !salary||
+      !role
     )
-      return res.status(400).json({ success: false, message: "All field are required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "All field are required" });
 
     let isExist = await User.findOne({ email });
     if (isExist)
-      return res.status(200).json({ success: false, message: "This email is occupied" });
+      return res
+        .status(200)
+        .json({ success: false, message: "This email is occupied" });
 
     let hashPass = await bcrypt.hash(password, 10);
 
@@ -61,14 +69,14 @@ export const addEmployee = async (req, res) => {
 
     let newEmployee = await Employee.create({
       userId: newUser._id,
-      departmentId,
+      departmentId:department,
       dateOfBirth: dob,
       gender,
       designation,
       salary,
     });
 
-    let updateDepartment = await Department.findByIdAndUpdate(departmentId, {
+    let updateDepartment = await Department.findByIdAndUpdate(department, {
       $push: { employees: newEmployee._id },
     });
 
@@ -91,12 +99,16 @@ export const deleteEmployee = async (req, res) => {
     let { employeeId } = req.body;
 
     if (!employeeId)
-      return res.status(401).json({ success: false, message: "Please provide id" });
+      return res
+        .status(401)
+        .json({ success: false, message: "Please provide id" });
 
     let isExistEmployee = await Employee.findByIdAndDelete(employeeId);
 
     if (!isExistEmployee)
-      return res.status(404).json({ success: false, message: "Employee not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Employee not found" });
 
     await User.findByIdAndDelete(isExistEmployee.userId);
 
@@ -133,7 +145,7 @@ export const updateEmployee = async (req, res) => {
       name,
       email,
       password,
-      departmentId,
+      department,
       dob,
       gender,
       designation,
@@ -141,44 +153,51 @@ export const updateEmployee = async (req, res) => {
       role,
     } = req.body;
 
-    if (
-      !employeeId ||
-      !name ||
-      !email ||
-      !password ||
-      !departmentId ||
-      !dob ||
-      !gender ||
-      !designation ||
-      !salary ||
-      !role
-    )
-      return res.status(401).json({ success: false, message: "All field are required" });
-
     let employee = await Employee.findById(employeeId);
 
     if (!employee)
-      return res.status(404).json({ success: false, message: "Employee not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Employee not found" });
 
     // update user details
     let user = await User.findById(employee.userId);
 
-    user.name = name;
-    user.email = email;
+    if (name) {
+      user.name = name;
+    }
+    if (email) {
+      user.email = email;
+    }
 
-    let hashPass = await bcrypt.hash(password, 10);
-    user.password = hashPass;
-    user.role = role;
+    if (password) {
+      let hashPass = await bcrypt.hash(password, 10);
+      user.password = hashPass;
+    }
+
+    if (role) {
+      user.role = role;
+    }
 
     await user.save();
     // ----------------
 
     // update employee details
-    employee.departmentId = departmentId;
-    employee.dateOfBirth = dob;
-    employee.gender = gender;
-    employee.designation = designation;
-    employee.salary = salary;
+    if (department) {
+      employee.departmentId = department;
+    }
+    if (dob) {
+      employee.dateOfBirth = dob;
+    }
+    if (gender) {
+      employee.gender = gender;
+    }
+    if (designation) {
+      employee.designation = designation;
+    }
+    if (salary) {
+      employee.salary = salary;
+    }
     await employee.save();
     // ------------------
 

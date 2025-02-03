@@ -1,5 +1,5 @@
-import Employee from "../models/Employee";
-import Leave from "../models/Leave";
+import Employee from "../models/Employee.js";
+import Leave from "../models/Leave.js";
 
 export const addLeave = async (req, res) => {
   try {

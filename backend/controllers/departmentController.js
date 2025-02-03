@@ -1,16 +1,18 @@
-import Department from "../models/Department";
+import Department from "../models/Department.js";
 
 export const addDepartment = async (req, res) => {
   try {
-    let { departmentName } = req.body;
+    let { department } = req.body;
 
-    if (!departmentName)
+    if (!department)
       return res.status(400).json({
         success: false,
         message: "Department name is not provided",
       });
 
-    let departmentExist = await Department.findOne({ name: departmentName });
+      department=department.toUpperCase();
+
+    let departmentExist = await Department.findOne({ name: department });
 
     if (departmentExist)
       return res
@@ -18,7 +20,7 @@ export const addDepartment = async (req, res) => {
         .json({ success: false, message: "Department is already exist" });
 
     let newDepartment = await Department.create({
-      name: departmentName,
+      name: department,
     });
 
     return res.status(200).json({
@@ -34,7 +36,7 @@ export const addDepartment = async (req, res) => {
 export const getAllDepartment = async (req, res) => {
   try {
     let allDepartment = await Department.find({});
-    return res.status(200).json({ success: true, message: allDepartment });
+    return res.status(200).json({ success: true, data: allDepartment });
   } catch (er) {
     return res.status(500).json({ success: false, message: er.message });
   }
@@ -69,9 +71,9 @@ export const deleteDepartment = async (req, res) => {
 
 export const updateDepartment = async (req, res) => {
   try {
-    let { departmentId, name } = req.body;
+    let { departmentId, department } = req.body;
 
-    if (!departmentId || !name)
+    if (!departmentId || !department)
       return res
         .status(404)
         .json({ success: false, message: "All field are required" });
@@ -83,7 +85,7 @@ export const updateDepartment = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Deprtment not found" });
 
-    findDepartment.name = name;
+    findDepartment.name = department.toUpperCase();
     let updatedDepartment = await findDepartment.save();
 
     return res.status(200).json({

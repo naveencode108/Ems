@@ -1,5 +1,5 @@
 import express from 'express';
-import { addLeave, changeLeaveStatus, getAllLeaves, getEmployeeLeaves } from '../controllers/leaveController';
+import { addLeave, changeLeaveStatus, getAllLeaves, getEmployeeLeaves } from '../controllers/leaveController.js';
 
 const router=express.Router();
 
