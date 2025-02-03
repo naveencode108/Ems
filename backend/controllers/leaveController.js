@@ -57,7 +57,7 @@ export const getAllLeaves = async (req, res) => {
       path: "employeeId",
       populate: [{ path: "userId" }, { path: "departmentId" }],
     });
-    return res.status(200).json({ success: true, message: leaves });
+    return res.status(200).json({ success: true, data: leaves });
   } catch (er) {
     return res.status(500).json({ success: false, message: er.message });
   }

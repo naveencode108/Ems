@@ -4,6 +4,8 @@ import { MdDashboard } from "react-icons/md";
 import { PiUsersThreeFill } from "react-icons/pi";
 import { FaBuilding } from "react-icons/fa";
 import { MdWorkOff } from "react-icons/md";
+import { RiMoneyRupeeCircleFill } from "react-icons/ri";
+
 
 const Sidebar = () => {
   const SideData = [
@@ -11,6 +13,7 @@ const Sidebar = () => {
     { title: "Employees", path: "/employees", icon: <PiUsersThreeFill /> },
     { title: "Departments", path: "/departments", icon: <FaBuilding /> },
     { title: "Leaves", path: "/leaves", icon: <MdWorkOff /> },
+    { title: "Salary", path: "/salary", icon: <RiMoneyRupeeCircleFill /> },
   ];
 
   return (

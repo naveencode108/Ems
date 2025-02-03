@@ -1,9 +1,10 @@
 import 'dotenv/config';
 import express from 'express';
-import authRoute from './routes/authRoute.js'
-import employeeRoute from './routes/employeeRoute.js'
-import leaveRoute from './routes/leaveRoute.js'
-import departmentRoute from './routes/departmentRoute.js'
+import authRoute from './routes/authRoute.js';
+import employeeRoute from './routes/employeeRoute.js';
+import leaveRoute from './routes/leaveRoute.js';
+import departmentRoute from './routes/departmentRoute.js';
+import salaryRoute from './routes/salaryRoute.js';
 import cors from 'cors';
 import { connectDB } from './config/db.js';
 
@@ -22,6 +23,8 @@ app.use('/api/v1/auth',authRoute);
 app.use('/api/v1/employee',employeeRoute);
 app.use('/api/v1/leave',leaveRoute);
 app.use('/api/v1/department',departmentRoute);
+app.use('/api/v1/salary',salaryRoute);
+
 
 connectDB();
 

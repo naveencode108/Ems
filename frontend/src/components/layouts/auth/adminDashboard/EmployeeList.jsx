@@ -5,13 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { setEmployee } from "../../../../slices/employeeSlice";
 import ViewEmployeeDetails from "./EmployeeAddEdit/ViewEmployeeDetails";
 import EditEmployee from "./EmployeeAddEdit/EditEmployee";
+import ShowSalaryHistory from "./Salary/ShowSalaryHistory";
 
 const EmployeeList = () => {
   const [showAddEmployee, setshowAddEmployee] = useState(false);
   const [showEmployeeDetails, setShowEmployeeDetails] = useState(false);
-  const [showEmployeeData,setShowEmployeeData]=useState(null);
-  const [editEmployee,setEditEmployee]=useState(false);
-  const [editEmployeeData,setEditEmployeeData]=useState(null);
+  const [showEmployeeData, setShowEmployeeData] = useState(null);
+  const [editEmployee, setEditEmployee] = useState(false);
+  const [editEmployeeData, setEditEmployeeData] = useState(null);
+  const [showSalaryModel, setShowSalaryModel] = useState(false);
 
   const { employeeData } = useSelector((state) => state.employee);
 
@@ -34,10 +36,22 @@ const EmployeeList = () => {
       )}
 
       {showEmployeeDetails && (
-        <ViewEmployeeDetails onClose={() => setShowEmployeeDetails(false)}  data={showEmployeeData}/>
+        <ViewEmployeeDetails
+          onClose={() => setShowEmployeeDetails(false)}
+          data={showEmployeeData}
+        />
       )}
 
-      {editEmployee&&<EditEmployee data={editEmployeeData} onClose={()=>setEditEmployee(false)} />}
+      {editEmployee && (
+        <EditEmployee
+          data={editEmployeeData}
+          onClose={() => setEditEmployee(false)}
+        />
+      )}
+
+      {showSalaryModel&&
+       <ShowSalaryHistory onClose={()=>setShowSalaryModel(false)} data={showEmployeeData}/>
+      }
 
       <div className="w-full h-[calc(100vh-100px)] overflow-y-auto ">
         <h1 className="text-3xl text-center my-4">Manage Employee</h1>
@@ -78,24 +92,35 @@ const EmployeeList = () => {
                     <td className="px-4 py-4 text-sm">
                       {item.dateOfBirth.split("T")[0]}
                     </td>
-                    <td className="px-4 py-4 text-sm">{item.departmentId.name}</td>
+                    <td className="px-4 py-4 text-sm">
+                      {item.departmentId.name}
+                    </td>
                     <td className="px-4 py-4 space-x-2">
                       <button
                         onClick={() => {
-                          setShowEmployeeDetails(true)
-                          setShowEmployeeData(item)
+                          setShowEmployeeDetails(true);
+                          setShowEmployeeData(item);
                         }}
                         className="px-3 py-1 text-sm rounded-lg bg-sky-500 "
                       >
                         View
                       </button>
-                      <button onClick={()=>{
-                         setEditEmployeeData(item);
-                         setEditEmployee(true);
-                      }} className="px-3 text-sm py-1 rounded-lg bg-green-500 ">
+                      <button
+                        onClick={() => {
+                          setEditEmployeeData(item);
+                          setEditEmployee(true);
+                        }}
+                        className="px-3 text-sm py-1 rounded-lg bg-green-500 "
+                      >
                         Edit
                       </button>
-                      <button className="px-3 text-sm py-1 rounded-lg bg-yellow-500 ">
+                      <button
+                        onClick={() => {
+                          setShowSalaryModel(true);
+                          setShowEmployeeData(item);
+                        }}
+                        className="px-3 text-sm py-1 rounded-lg bg-yellow-500 "
+                      >
                         Salary
                       </button>
                       <button className="px-3 text-sm py-1 rounded-lg bg-red-500 ">
