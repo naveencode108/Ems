@@ -26,8 +26,7 @@ export const getDepartment=async()=>{
         return result;
         
     } catch (er) {
-        toast.error(er.message);
-        console.log(er.message);
+       return {success:false,message:er.response?.data?.message}
     }
 }
 
@@ -51,7 +50,6 @@ export const deleteDepartment=async(departmentId)=>{
     return result;
 
   } catch (er) {
-    console.log(er.message);
-    toast.error(er.message);
+    return {success:false,message:er.response?.data?.message};
   }
 }

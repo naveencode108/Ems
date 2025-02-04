@@ -7,7 +7,7 @@ import {
   addEmployee,
   updateEmploye,
 } from "../../../../../services/actions/employeeApi";
-import { setEmployee } from "../../../../../slices/employeeSlice";
+import { setEmployee, setLoading } from "../../../../../slices/employeeSlice";
 import toast from "react-hot-toast";
 
 const EmployeeForm = ({ type, data, onClose }) => {
@@ -19,7 +19,7 @@ const EmployeeForm = ({ type, data, onClose }) => {
   } = useForm();
 
   const { departmentData } = useSelector((state) => state.department);
-  const { employeeData } = useSelector((state) => state.employee);
+  const { employeeData, loading } = useSelector((state) => state.employee);
   const dispatch = useDispatch();
 
   const onSubmit = async (val) => {
@@ -55,22 +55,30 @@ const EmployeeForm = ({ type, data, onClose }) => {
       }
 
       formData.employeeId = data._id;
+      dispatch(setLoading(true));
       let result = await updateEmploye(formData);
-      if (result.data.success) {
+      if (result?.data?.success) {
         let newData = employeeData.map((item) =>
           item._id == val.employeeId ? { ...result.data.data } : item
         );
+        dispatch(setLoading(false));
         dispatch(setEmployee(newData));
         onClose();
         toast.success(result.data.message);
       } else {
-        toast.error(result.data.message);
+        dispatch(setLoading(false));
+        toast.error(result.message);
         onClose();
       }
     } else {
+      dispatch(setLoading(true));
       let result = await addEmployee(val);
-      if (result.data.success) {
+      if (result?.data?.success) {
+        dispatch(setLoading(false));
         dispatch(setEmployee([...employeeData, result.data.data]));
+      } else {
+        dispatch(setLoading(false));
+        toast.error(result.message);
       }
       onClose();
     }
@@ -80,8 +88,10 @@ const EmployeeForm = ({ type, data, onClose }) => {
     if (!departmentData) {
       const fetchDepartment = async () => {
         let result = await getDepartment();
-        if (result.data.success) {
+        if (result?.data?.success) {
           dispatch(setDepartMent(result.data.data));
+        } else {
+          toast.error(result?.message);
         }
       };
       fetchDepartment();
@@ -258,11 +268,11 @@ const EmployeeForm = ({ type, data, onClose }) => {
       <div className="w-full flex text-gray-800 justify-between col-span-3">
         <button
           onClick={() => onClose()}
-          className="px-4 rounded-full py-2 bg-emerald-300 "
+          className="px-4 rounded-full py-2 bg-emerald-300 hover:bg-emerald-400"
         >
           Close
         </button>
-        <button className="px-4 rounded-full py-2 bg-emerald-300 ">
+        <button disabled={loading} className="px-4 rounded-full py-2 bg-emerald-300 hover:bg-emerald-400 ">
           Submit
         </button>
       </div>

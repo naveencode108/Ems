@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { updateDepartment } from "../../../../../services/actions/departmentApi";
 import { setDepartMent } from "../../../../../slices/departmentSlice";
+import toast from "react-hot-toast";
 
 const EditDepartment = ({ onClick, editData }) => {
   const {
@@ -17,11 +18,11 @@ const EditDepartment = ({ onClick, editData }) => {
 
   const onSubmit = async (data) => {
     let result = await updateDepartment(data);
-    console.log(result);
     if (result.data.success) {
       let filterData = departmentData.map((item) =>
         item._id == data.departmentId ? { ...result.data.data } : item
       );
+      toast.success(result.data.message);
       dispatch(setDepartMent(filterData));
     }
     onClick();

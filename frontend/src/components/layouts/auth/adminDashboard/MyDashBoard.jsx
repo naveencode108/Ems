@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DashBoardOverview from "../../../comman/DashBoardOverview";
 import { PiUsersThreeFill } from "react-icons/pi";
 import { FaBuilding } from "react-icons/fa";
 import { FaMoneyBillWave } from "react-icons/fa";
+import { getOverview } from "../../../../services/actions/authApi";
+import toast from "react-hot-toast";
 
 const MyDashBoard = () => {
+
+  const [data,setData]=useState(null);
+
+  useEffect(()=>{
+    
+    const fetchOverview=async()=>{
+        let result=await getOverview();
+
+        if(result?.data?.success){
+            setData(result.data.data);
+        }
+        else{
+          toast.error(result.message);
+        }
+    }
+    fetchOverview();
+
+  },[])
+
+
   return (
     <div className="h-[calc(100vh-100px)] overflow-y-auto">
       <div className="space-y-5">
@@ -15,14 +37,17 @@ const MyDashBoard = () => {
           <DashBoardOverview
             icon={<PiUsersThreeFill size={25} />}
             text={"Total Employees"}
-          />
+            value={data?.totalEmployee}
+            />
           <DashBoardOverview
             icon={<FaBuilding size={25} />}
             text={"Total Departments"}
-          />
+            value={data?.totalDepartment}
+            />
           <DashBoardOverview
             icon={<FaMoneyBillWave size={25} />}
-            text={"Monthly Pay"}
+            text={"Total Salary"}
+            value={data?.totalSalary?.totalSalary}
           />
         </div>
       </div>

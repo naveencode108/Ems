@@ -13,7 +13,7 @@ const EmployeeList = () => {
   const [showEmployeeData, setShowEmployeeData] = useState(null);
   const [editEmployee, setEditEmployee] = useState(false);
   const [editEmployeeData, setEditEmployeeData] = useState(null);
-  const [showSalaryModel, setShowSalaryModel] = useState(false);
+  const [showSalary, setShowSalary] = useState(false);
 
   const { employeeData } = useSelector((state) => state.employee);
 
@@ -49,8 +49,8 @@ const EmployeeList = () => {
         />
       )}
 
-      {showSalaryModel&&
-       <ShowSalaryHistory onClose={()=>setShowSalaryModel(false)} data={showEmployeeData}/>
+      {showSalary&&
+       <ShowSalaryHistory onClose={()=>setShowSalary(false)} data={showEmployeeData}/>
       }
 
       <div className="w-full h-[calc(100vh-100px)] overflow-y-auto ">
@@ -116,7 +116,7 @@ const EmployeeList = () => {
                       </button>
                       <button
                         onClick={() => {
-                          setShowSalaryModel(true);
+                          setShowSalary(true);
                           setShowEmployeeData(item);
                         }}
                         className="px-3 text-sm py-1 rounded-lg bg-yellow-500 "

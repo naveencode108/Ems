@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import Employee from "../models/Employee.js";
+import Department from '../models/Department.js'
 
 export const login = async (req, res) => {
   try {
@@ -28,6 +30,7 @@ export const login = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        role:user.role
       },
       token
     });
@@ -35,3 +38,25 @@ export const login = async (req, res) => {
     return res.status(500).json({ success: false, message: er.message });
   }
 };
+
+
+export const dashboardOverview=async(req,res)=>{
+  try {
+    
+    let totalEmployee=await Employee.countDocuments();
+    let totalDepartment=await Department.countDocuments();
+
+    let totalSalary=await Employee.aggregate([
+      {$group:{_id:null,totalSalary:{$sum:'$salary'}}}
+    ])
+
+    return res.status(200).json({success:true,data:{
+      totalEmployee,
+      totalDepartment,
+      totalSalary:totalSalary[0]
+    }});
+
+  } catch (er) {
+     return res.status(500).json({success:false,message:er.message});
+  }
+}

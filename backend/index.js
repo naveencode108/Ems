@@ -8,6 +8,7 @@ import salaryRoute from './routes/salaryRoute.js';
 import cors from 'cors';
 import { connectDB } from './config/db.js';
 
+
 const app=express();
 
 app.use(cors({

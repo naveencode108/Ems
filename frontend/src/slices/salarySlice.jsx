@@ -1,7 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState={
-    salaryData:null
+    salaryData:null,
+    loading:false,
 }
 
 const salarySlice=createSlice({
@@ -10,10 +11,13 @@ const salarySlice=createSlice({
     reducers:{
         setSalary:(state,action)=>{
             state.salaryData=action.payload
-        }
+        },
+        setLoading:(state,action)=>{
+            state.loading=action.payload
+    }
     }
 })
 
-export const {setSalary}=salarySlice.actions;
+export const {setSalary,setLoading}=salarySlice.actions;
 
 export default salarySlice.reducer;

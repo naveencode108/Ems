@@ -14,26 +14,26 @@ const DepartmentList = () => {
   const [editDepartment, setEditDepartment] = useState(false);
   const [editData, setEditData] = useState(null);
 
-  const { departmentData } = useSelector((state) => state.department);
+  const { departmentData, loading } = useSelector((state) => state.department);
   const dispatch = useDispatch();
 
   const handleDelete = async (departmentId) => {
     let result = await deleteDepartment(departmentId);
-    if (result.data.success) {
+    if (result?.data?.success) {
       let filterData = departmentData.filter(
         (item) => item._id !== departmentId
       );
       dispatch(setDepartMent(filterData));
       toast.success(result.data.message);
     } else {
-      toast.error(result.data.message);
+      toast.error(result.message);
     }
   };
 
   useEffect(() => {
+    dispatch(setLoading(true));
     const fetchDepartment = async () => {
       let result = await getDepartment();
-      dispatch(setLoading(true));
       if (result.data.success) {
         dispatch(setLoading(false));
         dispatch(setDepartMent(result.data.data));
@@ -41,6 +41,13 @@ const DepartmentList = () => {
     };
     fetchDepartment();
   }, []);
+
+  if (loading)
+    return (
+      <div className="w-full h-screen grid place-content-center text-2xl">
+        Loading..
+      </div>
+    );
 
   return (
     <>
