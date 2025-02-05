@@ -34,3 +34,16 @@ export const updateEmploye=async(data)=>{
     return {success:false,message:er.response?.data?.message};
   }
 }
+
+export const getEmployeebyUserId=async(userId)=>{
+   try {
+      
+    let result;
+    result=await apiCall('POST','/api/v1/employee/get_employee_by_id',null,{userId});
+    return result;
+    
+   } catch (er) {
+      console.log(er);
+      return {success:false,message:er.response?.data?.message};
+   }
+}

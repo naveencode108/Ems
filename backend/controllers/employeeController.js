@@ -5,14 +5,14 @@ import bcrypt from "bcrypt";
 
 export const getEmployeeByUserId = async (req, res) => {
   try {
-    let { id } = req.params;
+    let { userId } = req.body;
 
-    if (!id)
+    if (!userId)
       return res
         .status(400)
         .json({ success: false, message: "Id is not provided" });
 
-    let employee = await Employee.findOne({ userId: id })
+    let employee = await Employee.findOne({ userId })
       .populate("userId")
       .populate("departmentId");
 

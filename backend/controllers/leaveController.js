@@ -3,9 +3,8 @@ import Leave from "../models/Leave.js";
 
 export const addLeave = async (req, res) => {
   try {
-    let userId = req.userId;
 
-    let { reason, startDate, endDate } = req.body;
+    let { reason, startDate, endDate,userId } = req.body;
 
     if (!userId || !reason || !startDate || !endDate)
       return res.status(400).json({ success: false, message: "All field are required" });
@@ -23,7 +22,7 @@ export const addLeave = async (req, res) => {
     });
 
     return res.status(200).json({
-      success: false,
+      success: true,
       message: "Leave created successfully",
       data: newLeave,
     });
@@ -34,7 +33,8 @@ export const addLeave = async (req, res) => {
 
 export const getEmployeeLeaves = async (req, res) => {
   try {
-    let userId = req.userId;
+    // let userId = req.userId;
+    let {userId}=req.body;
 
     if (!userId)
       return res.status(400).json({ success: false, message: "User Id is required" });

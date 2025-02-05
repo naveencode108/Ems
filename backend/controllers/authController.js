@@ -24,13 +24,14 @@ export const login = async (req, res) => {
       expiresIn: "1d",
     });
 
+
     return res.status(200).json({
       success: true,
       data: {
         id: user._id,
         name: user.name,
         email: user.email,
-        role:user.role
+        role:user.role,
       },
       token
     });

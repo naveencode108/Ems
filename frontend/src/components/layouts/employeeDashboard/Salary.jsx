@@ -1,48 +1,35 @@
-import React, { useEffect } from "react";
-import { getSalary } from "../../../../../services/actions/salaryApi";
-import { useDispatch } from "react-redux";
-import { setLoading, setSalary } from "../../../../../slices/salarySlice";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import {
+  getEmployeeSalary,
+  getSalary,
+} from "../../../services/actions/salaryApi";
+import toast from "react-hot-toast";
 
-const ShowSalaryHistory = ({ onClose, data }) => {
-  const dispatch = useDispatch();
-
-  const { salaryData, loading } = useSelector((state) => state.salary);
+const Salary = () => {
+  const { user } = useSelector((state) => state.auth);
+  const [salaryHistory, setSalaryHistory] = useState(null);
 
   useEffect(() => {
-    dispatch(setLoading(true));
     const fetchSalaryHistory = async () => {
-      let result = await getSalary({employeeId:data._id} );
-      console.log(result);
+      let result = await getEmployeeSalary({ userId: user.id });
       if (result?.data?.success) {
-        dispatch(setLoading(false));
-        dispatch(setSalary(result.data.data));
+        setSalaryHistory(result.data.data);
+      } else {
+        toast.error(result?.message);
       }
     };
     fetchSalaryHistory();
-
-    return () => {
-      dispatch(setSalary(null));
-    };
   }, []);
 
+//   max-h-[calc(100vh-1px)]
   return (
-    <div className="fixed inset-0 backdrop-blur-sm flex justify-center items-center transition-all ease-linear">
-      <div className="p-4 w-[50rem] bg-white shadow-lg rounded-lg">
+    <div className="w-full flex h-screen justify-center items-center transition-all ease-linear">
+      <div className=" w-full p-3 h-full overflow-y-auto bg-white shadow-lg rounded-lg">
         <h1 className="flex p-3 justify-between items-center text-2xl mb-2  border-b border-gray-700 ">
           Salary History
-          <button
-            onClick={onClose}
-            className="text-sm px-2 py-1 bg-red-500 rounded-xl text-white"
-          >
-            close
-          </button>
         </h1>
-
-        {loading ? (
-          <div className="grid place-content-center text-2xl">Loading..</div>
-        ) : (
-          <div className="w-full p-3 max-h-[calc(100vh-20rem)] overflow-y-auto">
+          <div className="w-full overflow-y-auto">
             <table className="w-full text-center">
               <thead className="border-b-[1px] border-b-gray-500">
                 <tr className="">
@@ -56,8 +43,8 @@ const ShowSalaryHistory = ({ onClose, data }) => {
                 </tr>
               </thead>
               <tbody>
-                {salaryData && salaryData.length > 0 ? (
-                  salaryData.map((item, index) => (
+                {salaryHistory && salaryHistory.length > 0 ? (
+                  salaryHistory.map((item, index) => (
                     <tr
                       key={index}
                       className="border-b-[1px] border-b-gray-500"
@@ -83,10 +70,9 @@ const ShowSalaryHistory = ({ onClose, data }) => {
               </tbody>
             </table>
           </div>
-        )}
       </div>
     </div>
   );
 };
 
-export default ShowSalaryHistory;
+export default Salary;

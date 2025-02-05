@@ -1,4 +1,5 @@
 import Salary from "../models/Salary.js";
+import Employee from '../models/Employee.js';
 
 export const addSalary = async (req, res) => {
   try {
@@ -48,3 +49,25 @@ export const getSalaryHistory = async (req, res) => {
     return res.status(500).json({ success: false, message: er.message });
   }
 };
+
+export const getEmployeeSalaryHistory=async(req,res)=>{
+  try {
+    let { userId } = req.body;
+
+    if (!userId)
+      return res
+        .status(401)
+        .json({ success: false, message: "user Id is not provided" });
+
+     let employee=await Employee.findOne({userId});   
+
+    let employeeSalary = await Salary.find({ employeeId:employee._id }).populate({
+      path: "employeeId",
+      populate: [{ path: "userId" }, { path: "departmentId" }],
+    });
+
+    return res.status(200).json({ success: true, data: employeeSalary });
+  } catch (er) {
+    return res.status(500).json({ success: false, message: er.message });
+  }
+}

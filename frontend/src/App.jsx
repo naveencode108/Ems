@@ -8,6 +8,11 @@ import LeaveList from "./components/layouts/auth/adminDashboard/LeaveList";
 import Salary from "./components/layouts/auth/adminDashboard/Salary";
 import Login from "./pages/Login";
 import ProtectedRoutes from "./components/layouts/auth/ProtectedRoutes";
+import EmployeeDashboard from "./pages/EmployeeDashboard";
+import Dashboard from "./components/layouts/employeeDashboard/Dashboard";
+import Profile from "./components/layouts/employeeDashboard/Profile";
+import Leave from "./components/layouts/employeeDashboard/Leave";
+import EmployeeSalary from "./components/layouts/employeeDashboard/Salary";
 
 const App = () => {
   return (
@@ -15,12 +20,7 @@ const App = () => {
       <Route path="/login" element={<Login />} />
 
       <Route
-        element={
-          <ProtectedRoutes>
-            <AdminDashboard />
-          </ProtectedRoutes>
-        }
-      >
+        element={<ProtectedRoutes><AdminDashboard /></ProtectedRoutes>}>
         <Route path="/" element={<MyDashBoard />} />
         <Route path="/employees" element={<EmployeeList />} />
         <Route path="/departments" element={<DepartmentList />} />
@@ -29,6 +29,13 @@ const App = () => {
       </Route>
 
       {/* employee dashboard */}
+
+      <Route element={<EmployeeDashboard />}>
+        <Route path="/employee-dashboard" element={<Dashboard />} />
+        <Route path="/employee-profile" element={<Profile />} />
+        <Route path="/employee-leave" element={<Leave />} />
+        <Route path="/employee-salary" element={<EmployeeSalary />} />
+      </Route>
     </Routes>
   );
 };

@@ -29,12 +29,13 @@ const Login = () => {
       localStorage.setItem("token", result.data.token);
       
       if(result.data.data.role=='admin'){
-          navigate('/');
-          toast.success('Welcome Admin');
+        navigate('/');
+        toast.success('Welcome Admin');
       }
-
+      
       if(result.data.data.role=='employee'){
-        console.log("employee");
+        navigate('/employee-dashboard');
+        toast.success('Welcome!');
       }
     }
     else{ 

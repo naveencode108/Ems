@@ -11,7 +11,7 @@ router.put('/update_employee',updateEmployee);
 // -----------
 
 
-router.get('get_employee_by_id',getEmployeeByUserId);
+router.post('/get_employee_by_id',getEmployeeByUserId);
 
 
 export default router;

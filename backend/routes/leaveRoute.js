@@ -5,7 +5,7 @@ const router=express.Router();
 
 
 router.post('/add_leave',addLeave);
-router.get('/get_employee_leave',getEmployeeLeaves);
+router.post('/get_employee_leave',getEmployeeLeaves); // will  change the method post to get later when create middleware
 
 router.get('/get_all_leaves',getAllLeaves);
 
