@@ -15,12 +15,13 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const navigate=useNavigate();
-  const {loading}=useSelector(state=>state.auth);
+  const {token,loading}=useSelector(state=>state.auth);
+
   
 
   const onSubmit = async (data) => {
      dispatch(setLoading(true));
-     let result = await login(data);
+     let result = await login(data,token);
      if (result?.data?.success) {
       dispatch(setLoading(false));
       dispatch(setToken(result.data.token));

@@ -9,16 +9,18 @@ import { IoNewspaper } from "react-icons/io5";
 import { IoTimeSharp } from "react-icons/io5";
 import { FaTimesCircle } from "react-icons/fa";
 import { FaTasks } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 
 const MyDashBoard = () => {
 
   const [data,setData]=useState(null);
+  const {token}=useSelector(state=>state.auth);
 
   useEffect(()=>{
     
     const fetchOverview=async()=>{
-        let result=await getOverview();
+        let result=await getOverview(token);
 
         if(result?.data?.success){
             setData(result.data.data);

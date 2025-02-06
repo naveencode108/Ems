@@ -10,7 +10,7 @@ import {
 import { setEmployee, setLoading } from "../../../../../slices/employeeSlice";
 import toast from "react-hot-toast";
 
-const EmployeeForm = ({ type, data, onClose }) => {
+const EmployeeForm = ({ type, data, onClose, token }) => {
   const {
     register,
     formState: { errors },
@@ -56,7 +56,7 @@ const EmployeeForm = ({ type, data, onClose }) => {
 
       formData.employeeId = data._id;
       dispatch(setLoading(true));
-      let result = await updateEmploye(formData);
+      let result = await updateEmploye(formData, token);
       if (result?.data?.success) {
         let newData = employeeData.map((item) =>
           item._id == val.employeeId ? { ...result.data.data } : item
@@ -72,7 +72,7 @@ const EmployeeForm = ({ type, data, onClose }) => {
       }
     } else {
       dispatch(setLoading(true));
-      let result = await addEmployee(val);
+      let result = await addEmployee(val, token);
       if (result?.data?.success) {
         toast.success(result.data.message);
         dispatch(setLoading(false));
@@ -88,7 +88,7 @@ const EmployeeForm = ({ type, data, onClose }) => {
   useEffect(() => {
     if (!departmentData) {
       const fetchDepartment = async () => {
-        let result = await getDepartment();
+        let result = await getDepartment(token);
         if (result?.data?.success) {
           dispatch(setDepartMent(result.data.data));
         } else {
@@ -273,7 +273,10 @@ const EmployeeForm = ({ type, data, onClose }) => {
         >
           Close
         </button>
-        <button disabled={loading} className="px-4 rounded-full py-2 bg-emerald-300 hover:bg-emerald-400 ">
+        <button
+          disabled={loading}
+          className="px-4 rounded-full py-2 bg-emerald-300 hover:bg-emerald-400 "
+        >
           Submit
         </button>
       </div>

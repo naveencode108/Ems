@@ -22,6 +22,7 @@ const SalaryForm = () => {
 
   const { departmentData } = useSelector((state) => state.department);
   const { employeeData } = useSelector((state) => state.employee);
+  const {token}=useSelector(state=>state.auth);
 
   const navigate=useNavigate();
   const handleDepartmentChange = (e) => {
@@ -31,7 +32,7 @@ const SalaryForm = () => {
   };
 
   const onSubmit = async(data) => {
-    let result=await addSalary(data);
+    let result=await addSalary(data,token);
     console.log(result);
 
     if(result.data.success){
@@ -42,14 +43,14 @@ const SalaryForm = () => {
 
   useEffect(() => {
     const fetchDepartment = async () => {
-      let result = await getDepartment();
+      let result = await getDepartment(token);
       if (result.data.success) {
         dispatch(setDepartMent(result.data.data));
       }
     };
 
     const fetchAllEmployee = async () => {
-      let result = await getAllEmployee();
+      let result = await getAllEmployee(token);
       if (result.data.success) {
         dispatch(setEmployee(result.data.data));
       }

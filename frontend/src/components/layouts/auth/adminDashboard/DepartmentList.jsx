@@ -15,10 +15,11 @@ const DepartmentList = () => {
   const [editData, setEditData] = useState(null);
 
   const { departmentData, loading } = useSelector((state) => state.department);
+  const {token}=useSelector(state=>state.auth);
   const dispatch = useDispatch();
 
   const handleDelete = async (departmentId) => {
-    let result = await deleteDepartment(departmentId);
+    let result = await deleteDepartment(departmentId,token);
     if (result?.data?.success) {
       let filterData = departmentData.filter(
         (item) => item._id !== departmentId
@@ -33,7 +34,7 @@ const DepartmentList = () => {
   useEffect(() => {
     dispatch(setLoading(true));
     const fetchDepartment = async () => {
-      let result = await getDepartment();
+      let result = await getDepartment(token);
       if (result?.data?.success) {
         dispatch(setLoading(false));
         dispatch(setDepartMent(result.data.data));

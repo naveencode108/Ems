@@ -4,13 +4,13 @@ import { changeLeaveStatus } from "../../../../../services/actions/leaveApi";
 import toast from "react-hot-toast";
 import { setLeave } from "../../../../../slices/leaveSlice";
 
-const LeaveStatus = ({ onClose, data }) => {
+const LeaveStatus = ({ onClose, data ,token}) => {
   const { leaveData } = useSelector((state) => state.leave);
 
   const dispatch = useDispatch();
 
   const handleChange = async (status, id) => {
-    let result = await changeLeaveStatus({ leaveId: id, leaveStatus: status });
+    let result = await changeLeaveStatus({ leaveId: id, leaveStatus: status },token);
     if (result?.data?.success) {
       let newData = leaveData.map((item) =>
         item._id === result?.data?.data?._id ? { ...result?.data?.data } : item

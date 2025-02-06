@@ -15,9 +15,10 @@ const EditDepartment = ({ onClick, editData }) => {
 
   const dispatch = useDispatch();
   const { departmentData } = useSelector((state) => state.department);
+  const {token}=useSelector(state=>state.auth);
 
   const onSubmit = async (data) => {
-    let result = await updateDepartment(data);
+    let result = await updateDepartment(data,token);
     if (result.data.success) {
       let filterData = departmentData.map((item) =>
         item._id == data.departmentId ? { ...result.data.data } : item

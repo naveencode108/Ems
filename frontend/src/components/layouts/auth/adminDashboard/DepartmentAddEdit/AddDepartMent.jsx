@@ -14,9 +14,10 @@ const AddDepartMent = ({ onClick }) => {
 
   const dispatch=useDispatch();
   let {departmentData}=useSelector(state=>state.department);
+  const {token}=useSelector(state=>state.auth);
 
   const onSubmit = async (data) => {
-    let result = await addDepartment(data);
+    let result = await addDepartment(data,token);
 
     if(result?.data?.success){
         toast.success(result.data.message);

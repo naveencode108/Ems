@@ -9,12 +9,13 @@ const LeaveList = () => {
   const { leaveData } = useSelector((state) => state.leave);
   const [open,setOpen]=useState(false);
   const [leaveDetails,setLeaveDetails]=useState(null);
+  const {token}=useSelector(state=>state.auth);
 
 
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchLeave = async () => {
-      let result = await getAllLeave();
+      let result = await getAllLeave(token);
       if (result?.data?.success) {
         dispatch(setLeave(result?.data?.data));
       } else {
@@ -26,7 +27,7 @@ const LeaveList = () => {
 
   return (
     <>
-     {open&&<LeaveStatus onClose={()=>setOpen(false)} data={leaveDetails} />}
+     {open&&<LeaveStatus onClose={()=>setOpen(false)} data={leaveDetails} token={token}/>}
     <div className="w-full h-[calc(100vh-100px)] overflow-y-auto ">
       <h1 className="text-3xl text-center my-4">Manage Leaves</h1>
 

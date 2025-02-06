@@ -7,12 +7,12 @@ import {
 import toast from "react-hot-toast";
 
 const Salary = () => {
-  const { user } = useSelector((state) => state.auth);
+  const { user,token } = useSelector((state) => state.auth);
   const [salaryHistory, setSalaryHistory] = useState(null);
 
   useEffect(() => {
     const fetchSalaryHistory = async () => {
-      let result = await getEmployeeSalary({ userId: user.id });
+      let result = await getEmployeeSalary({ userId: user.id },token);
       if (result?.data?.success) {
         setSalaryHistory(result.data.data);
       } else {
@@ -22,7 +22,6 @@ const Salary = () => {
     fetchSalaryHistory();
   }, []);
 
-//   max-h-[calc(100vh-1px)]
   return (
     <div className="w-full flex h-screen justify-center items-center transition-all ease-linear">
       <div className=" w-full p-3 h-full overflow-y-auto bg-white shadow-lg rounded-lg">

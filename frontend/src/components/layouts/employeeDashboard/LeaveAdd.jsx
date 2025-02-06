@@ -12,14 +12,14 @@ const LeaveAdd = ({onClose}) => {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const { user } = useSelector((state) => state.auth);
+  const { user,token } = useSelector((state) => state.auth);
   const { leaveData } = useSelector((state) => state.leave);
   const dispatch=useDispatch();
 
 
   const onSubmit = async(data) => {
       
-    let result=await addLeave(data);
+    let result=await addLeave(data,token);
 
       if(result?.data?.success){
          dispatch(setLeave([...leaveData,result.data.data]))

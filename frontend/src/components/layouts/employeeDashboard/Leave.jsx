@@ -9,11 +9,11 @@ const Leave = () => {
   const [openAdd, setOpenAdd] = useState(false);
   const dispatch = useDispatch();
   const { leaveData } = useSelector((state) => state.leave);
-  const { user } = useSelector((state) => state.auth);
+  const { user ,token} = useSelector((state) => state.auth);
 
   useEffect(() => {
     const fetchLeave = async () => {
-      let result = await getEmployeeLeave(user?.id);
+      let result = await getEmployeeLeave(user?.id,token);
       if (result?.data?.success) {
         dispatch(setLeave(result.data.data));
       } else {

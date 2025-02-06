@@ -4,14 +4,14 @@ import { getEmployeeLeave } from "../../../../../services/actions/leaveApi";
 import { setLeave } from "../../../../../slices/leaveSlice";
 import toast from "react-hot-toast";
 
-const LeaveHistory = ({ onClose, data }) => {
+const LeaveHistory = ({ onClose, data,token }) => {
   const [leave, setLeave] = useState();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchLeave = async () => {
       setLoading(true);
-      let result = await getEmployeeLeave(data?.userId?._id);
+      let result = await getEmployeeLeave(data?.userId?._id,token);
       if (result?.data?.success) {
         setLoading(false);
         setLeave(result.data.data);

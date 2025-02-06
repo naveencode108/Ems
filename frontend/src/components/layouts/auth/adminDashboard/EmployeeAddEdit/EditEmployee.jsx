@@ -1,6 +1,6 @@
 import EmployeeForm from "./EmployeeForm";
 
-const EditEmployee = ({ data, onClose }) => {
+const EditEmployee = ({ data, onClose,token }) => {
  
 
   return (
@@ -9,7 +9,7 @@ const EditEmployee = ({ data, onClose }) => {
         <h1 className="text-2xl mb-2  border-b border-gray-700 ">
           Edit Employee
         </h1>
-         <EmployeeForm type={'EDIT'} data={data} onClose={onClose}/>
+         <EmployeeForm type={'EDIT'} data={data} onClose={onClose} token={token}/>
       </div>
     </div>
   );

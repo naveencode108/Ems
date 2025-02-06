@@ -3,23 +3,6 @@ import { IoClose } from "react-icons/io5";
 
 const ViewEmployeeDetails = ({onClose,data}) => {
   return (
-    // <div className='fixed inset-0 w-full h-screen backdrop-blur-sm flex justify-center items-center px-5'>
-    //      <div className='w-[30rem] bg-gray-200 p-5'>
-    //            <h1>Employee Detials</h1>
-    //            <div className='flex items-center gap-2'>
-    //               <div className='w-[20rem] h-[10rem] rounded-full object-cover bg-red-500'>
-    //                  <img src="" alt="" />
-    //               </div>
-    //               <div className='w-full space-y-4' >
-    //                   <p>Name:{data.userId.name}</p>
-    //                   <p>Date of Birth:{data.dateOfBirth.split('T')[0]}</p>
-    //                   <p>Gender:{data.gender}</p>
-    //                   <p>Department:{data.departmentId.name}</p>
-    //                   <p>Designation:{data.designation}</p>
-    //               </div>
-    //            </div>
-    //      </div>
-    // </div>
     <div className="fixed inset-0 w-full h-screen backdrop-blur-sm bg-black/30 flex justify-center items-center px-5">
     <div className="w-[32rem] bg-white p-6 rounded-lg shadow-lg">
       {/* Header Section */}

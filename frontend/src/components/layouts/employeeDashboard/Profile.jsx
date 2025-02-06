@@ -4,14 +4,14 @@ import { getEmployeebyUserId } from "../../../services/actions/employeeApi";
 import toast from "react-hot-toast";
 
 const Profile = () => {
-  const { user } = useSelector((state) => state.auth);
+  const { user,token } = useSelector((state) => state.auth);
   const [profileData,setProfileData]=useState(null);
   const [loading,setLoading]=useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
       setLoading(true);
-      let result = await getEmployeebyUserId(user.id);
+      let result = await getEmployeebyUserId(user.id,token);
       if(result?.data?.success){
         setProfileData(result.data.data)
         setLoading(false);

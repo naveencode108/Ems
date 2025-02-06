@@ -18,12 +18,13 @@ const EmployeeList = () => {
   const [showLeave,setShowLeave]=useState(false);
 
   const { employeeData } = useSelector((state) => state.employee);
+  const {token}=useSelector(state=>state.auth);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchAllEmployee = async () => {
-      let result = await getAllEmployee();
+      let result = await getAllEmployee(token);
       if (result.data.success) {
         dispatch(setEmployee(result.data.data));
       }
@@ -34,29 +35,29 @@ const EmployeeList = () => {
   return (
     <>
       {showAddEmployee && (
-        <AddEmployee onClick={() => setshowAddEmployee(false)} />
+        <AddEmployee onClick={() => setshowAddEmployee(false)}  token={token}/>
       )}
 
       {showEmployeeDetails && (
         <ViewEmployeeDetails
           onClose={() => setShowEmployeeDetails(false)}
           data={showEmployeeData}
-        />
+         />
       )}
 
       {editEmployee && (
         <EditEmployee
           data={editEmployeeData}
           onClose={() => setEditEmployee(false)}
-        />
+        token={token} />
       )}
 
       {showSalary&&
-       <ShowSalaryHistory onClose={()=>setShowSalary(false)} data={showEmployeeData}/>
+       <ShowSalaryHistory onClose={()=>setShowSalary(false)} data={showEmployeeData} token={token}/>
       }
 
       {showLeave&&
-       <LeaveHistory onClose={()=>setShowLeave(false)} data={showEmployeeData}/>
+       <LeaveHistory onClose={()=>setShowLeave(false)} data={showEmployeeData} token={token}/>
       }
 
       <div className="w-full h-[calc(100vh-100px)] overflow-y-auto ">

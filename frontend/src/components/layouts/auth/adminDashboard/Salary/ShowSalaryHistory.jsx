@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { setLoading, setSalary } from "../../../../../slices/salarySlice";
 import { useSelector } from "react-redux";
 
-const ShowSalaryHistory = ({ onClose, data }) => {
+const ShowSalaryHistory = ({ onClose, data,token }) => {
   const dispatch = useDispatch();
 
   const { salaryData, loading } = useSelector((state) => state.salary);
@@ -12,8 +12,7 @@ const ShowSalaryHistory = ({ onClose, data }) => {
   useEffect(() => {
     dispatch(setLoading(true));
     const fetchSalaryHistory = async () => {
-      let result = await getSalary({employeeId:data._id} );
-      console.log(result);
+      let result = await getSalary({employeeId:data._id},token );
       if (result?.data?.success) {
         dispatch(setLoading(false));
         dispatch(setSalary(result.data.data));
