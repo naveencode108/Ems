@@ -15,12 +15,30 @@ const EmployeeList = () => {
   const [editEmployee, setEditEmployee] = useState(false);
   const [editEmployeeData, setEditEmployeeData] = useState(null);
   const [showSalary, setShowSalary] = useState(false);
-  const [showLeave,setShowLeave]=useState(false);
+  const [showLeave, setShowLeave] = useState(false);
 
   const { employeeData } = useSelector((state) => state.employee);
-  const {token}=useSelector(state=>state.auth);
+  const { token } = useSelector((state) => state.auth);
+  const [searchData, setSearchData] = useState(null);
 
   const dispatch = useDispatch();
+
+  const handleSearch = (e) => {
+    if (e.target.value.trim() !== "") {
+      let filter;
+      setTimeout(() => {
+        filter = employeeData.filter(
+          (item) =>
+            item?.userId?.name.toLowerCase().includes(e.target.value) ||
+            item?.departmentId?.name.toLowerCase().includes(e.target.value)
+        );
+        setSearchData(filter);
+      }, 300);
+    }
+    else{
+      setSearchData(null);
+    }
+  };
 
   useEffect(() => {
     const fetchAllEmployee = async () => {
@@ -35,36 +53,46 @@ const EmployeeList = () => {
   return (
     <>
       {showAddEmployee && (
-        <AddEmployee onClick={() => setshowAddEmployee(false)}  token={token}/>
+        <AddEmployee onClick={() => setshowAddEmployee(false)} token={token} />
       )}
 
       {showEmployeeDetails && (
         <ViewEmployeeDetails
           onClose={() => setShowEmployeeDetails(false)}
           data={showEmployeeData}
-         />
+        />
       )}
 
       {editEmployee && (
         <EditEmployee
           data={editEmployeeData}
           onClose={() => setEditEmployee(false)}
-        token={token} />
+          token={token}
+        />
       )}
 
-      {showSalary&&
-       <ShowSalaryHistory onClose={()=>setShowSalary(false)} data={showEmployeeData} token={token}/>
-      }
+      {showSalary && (
+        <ShowSalaryHistory
+          onClose={() => setShowSalary(false)}
+          data={showEmployeeData}
+          token={token}
+        />
+      )}
 
-      {showLeave&&
-       <LeaveHistory onClose={()=>setShowLeave(false)} data={showEmployeeData} token={token}/>
-      }
+      {showLeave && (
+        <LeaveHistory
+          onClose={() => setShowLeave(false)}
+          data={showEmployeeData}
+          token={token}
+        />
+      )}
 
       <div className="w-full h-[calc(100vh-100px)] overflow-y-auto ">
         <h1 className="text-3xl text-center my-4">Manage Employee</h1>
 
         <div className="flex justify-between items-center px-5">
           <input
+            onChange={handleSearch}
             type="text"
             placeholder="Search here"
             className="bg-gray-100 text-gray-700 outline-none ring-1 rounded-md py-2 px-1"
@@ -90,55 +118,124 @@ const EmployeeList = () => {
               </tr>
             </thead>
             <tbody>
-              {employeeData &&
-                employeeData.map((item, index) => (
-                  <tr key={index} className="border-b-[1px] border-b-gray-500">
-                    <td className="px-4 py-4 text-sm">{index + 1}</td>
-                    <td className="px-4 py-4 text-sm">{item?.userId?.name}</td>
-                    <td className="px-4 py-4 text-sm">{item?.userId?.name}</td>
-                    <td className="px-4 py-4 text-sm">
-                      {item.dateOfBirth.split("T")[0]}
-                    </td>
-                    <td className="px-4 py-4 text-sm">
-                      {item.departmentId.name}
-                    </td>
-                    <td className="px-4 py-4 space-x-2">
-                      <button
-                        onClick={() => {
-                          setShowEmployeeDetails(true);
-                          setShowEmployeeData(item);
-                        }}
-                        className="px-3 py-1 text-sm rounded-lg bg-sky-500 "
-                      >
-                        View
-                      </button>
-                      <button
-                        onClick={() => {
-                          setEditEmployeeData(item);
-                          setEditEmployee(true);
-                        }}
-                        className="px-3 text-sm py-1 rounded-lg bg-green-500 "
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => {
-                          setShowSalary(true);
-                          setShowEmployeeData(item);
-                        }}
-                        className="px-3 text-sm py-1 rounded-lg bg-yellow-500 "
-                      >
-                        Salary
-                      </button>
-                      <button onClick={()=>{
-                         setShowLeave(true);
-                         setShowEmployeeData(item);
-                      }} className="px-3 text-sm py-1 rounded-lg bg-red-500 ">
-                        Leave
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+              {searchData && searchData.length > 0
+                ? searchData.map((item, index) => (
+                    <tr
+                      key={index}
+                      className="border-b-[1px] border-b-gray-500"
+                    >
+                      <td className="px-4 py-4 text-sm">{index + 1}</td>
+                      <td className="px-4 py-4 text-sm">
+                        {item?.userId?.name}
+                      </td>
+                      <td className="px-4 py-4 text-sm">
+                        {item?.userId?.name}
+                      </td>
+                      <td className="px-4 py-4 text-sm">
+                        {item.dateOfBirth.split("T")[0]}
+                      </td>
+                      <td className="px-4 py-4 text-sm">
+                        {item.departmentId.name}
+                      </td>
+                      <td className="px-4 py-4 space-x-2">
+                        <button
+                          onClick={() => {
+                            setShowEmployeeDetails(true);
+                            setShowEmployeeData(item);
+                          }}
+                          className="px-3 py-1 text-sm rounded-lg bg-sky-500 "
+                        >
+                          View
+                        </button>
+                        <button
+                          onClick={() => {
+                            setEditEmployeeData(item);
+                            setEditEmployee(true);
+                          }}
+                          className="px-3 text-sm py-1 rounded-lg bg-green-500 "
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => {
+                            setShowSalary(true);
+                            setShowEmployeeData(item);
+                          }}
+                          className="px-3 text-sm py-1 rounded-lg bg-yellow-500 "
+                        >
+                          Salary
+                        </button>
+                        <button
+                          onClick={() => {
+                            setShowLeave(true);
+                            setShowEmployeeData(item);
+                          }}
+                          className="px-3 text-sm py-1 rounded-lg bg-red-500 "
+                        >
+                          Leave
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                : employeeData &&
+                  employeeData.map((item, index) => (
+                    <tr
+                      key={index}
+                      className="border-b-[1px] border-b-gray-500"
+                    >
+                      <td className="px-4 py-4 text-sm">{index + 1}</td>
+                      <td className="px-4 py-4 text-sm">
+                        {item?.userId?.name}
+                      </td>
+                      <td className="px-4 py-4 text-sm">
+                        {item?.userId?.name}
+                      </td>
+                      <td className="px-4 py-4 text-sm">
+                        {item.dateOfBirth.split("T")[0]}
+                      </td>
+                      <td className="px-4 py-4 text-sm">
+                        {item.departmentId.name}
+                      </td>
+                      <td className="px-4 py-4 space-x-2">
+                        <button
+                          onClick={() => {
+                            setShowEmployeeDetails(true);
+                            setShowEmployeeData(item);
+                          }}
+                          className="px-3 py-1 text-sm rounded-lg bg-sky-500 "
+                        >
+                          View
+                        </button>
+                        <button
+                          onClick={() => {
+                            setEditEmployeeData(item);
+                            setEditEmployee(true);
+                          }}
+                          className="px-3 text-sm py-1 rounded-lg bg-green-500 "
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => {
+                            setShowSalary(true);
+                            setShowEmployeeData(item);
+                          }}
+                          className="px-3 text-sm py-1 rounded-lg bg-yellow-500 "
+                        >
+                          Salary
+                        </button>
+                        <button
+                          onClick={() => {
+                            setShowLeave(true);
+                            setShowEmployeeData(item);
+                          }}
+                          className="px-3 text-sm py-1 rounded-lg bg-red-500 "
+                        >
+                          Leave
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
             </tbody>
           </table>
         </div>

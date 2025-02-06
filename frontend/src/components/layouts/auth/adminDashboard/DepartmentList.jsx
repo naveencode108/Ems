@@ -69,11 +69,11 @@ const DepartmentList = () => {
         <h1 className="text-3xl text-center my-4">Manage Department</h1>
 
         <div className="flex justify-between items-center px-5">
-          <input
+          {/* <input
             type="text"
             placeholder="Search here"
             className="bg-gray-100 text-gray-700 outline-none ring-1 rounded-md py-2 px-1"
-          />
+          /> */}
           <button
             onClick={() => setShowAddDepartment(true)}
             className="bg-emerald-500 text-white px-4 py-2 rounded-md shadow"
