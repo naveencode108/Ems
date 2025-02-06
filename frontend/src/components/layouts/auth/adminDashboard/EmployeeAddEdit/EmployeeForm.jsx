@@ -74,6 +74,7 @@ const EmployeeForm = ({ type, data, onClose }) => {
       dispatch(setLoading(true));
       let result = await addEmployee(val);
       if (result?.data?.success) {
+        toast.success(result.data.message);
         dispatch(setLoading(false));
         dispatch(setEmployee([...employeeData, result.data.data]));
       } else {

@@ -13,14 +13,18 @@ import Dashboard from "./components/layouts/employeeDashboard/Dashboard";
 import Profile from "./components/layouts/employeeDashboard/Profile";
 import Leave from "./components/layouts/employeeDashboard/Leave";
 import EmployeeSalary from "./components/layouts/employeeDashboard/Salary";
+import OpenRoutes from "./components/layouts/auth/OpenRoutes";
 
 const App = () => {
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
-
       <Route
-        element={<ProtectedRoutes><AdminDashboard /></ProtectedRoutes>}>
+        element={
+          <ProtectedRoutes allowedRole={["admin"]}>
+            <AdminDashboard />
+          </ProtectedRoutes>
+        }
+      >
         <Route path="/" element={<MyDashBoard />} />
         <Route path="/employees" element={<EmployeeList />} />
         <Route path="/departments" element={<DepartmentList />} />
@@ -29,13 +33,27 @@ const App = () => {
       </Route>
 
       {/* employee dashboard */}
-
-      <Route element={<EmployeeDashboard />}>
+      <Route
+        element={
+          <ProtectedRoutes allowedRole={["employee"]}>
+            <EmployeeDashboard />
+          </ProtectedRoutes>
+        }
+      >
         <Route path="/employee-dashboard" element={<Dashboard />} />
         <Route path="/employee-profile" element={<Profile />} />
         <Route path="/employee-leave" element={<Leave />} />
         <Route path="/employee-salary" element={<EmployeeSalary />} />
       </Route>
+      {/* login */}
+      <Route
+        path="/login"
+        element={
+          <OpenRoutes>
+            <Login />
+          </OpenRoutes>
+        }
+      />
     </Routes>
   );
 };

@@ -34,9 +34,12 @@ const DepartmentList = () => {
     dispatch(setLoading(true));
     const fetchDepartment = async () => {
       let result = await getDepartment();
-      if (result.data.success) {
+      if (result?.data?.success) {
         dispatch(setLoading(false));
         dispatch(setDepartMent(result.data.data));
+      }
+      else{
+        toast.error(result?.message);
       }
     };
     fetchDepartment();

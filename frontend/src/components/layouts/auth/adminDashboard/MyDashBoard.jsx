@@ -5,6 +5,11 @@ import { FaBuilding } from "react-icons/fa";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { getOverview } from "../../../../services/actions/authApi";
 import toast from "react-hot-toast";
+import { IoNewspaper } from "react-icons/io5";
+import { IoTimeSharp } from "react-icons/io5";
+import { FaTimesCircle } from "react-icons/fa";
+import { FaTasks } from "react-icons/fa";
+
 
 const MyDashBoard = () => {
 
@@ -38,16 +43,19 @@ const MyDashBoard = () => {
             icon={<PiUsersThreeFill size={25} />}
             text={"Total Employees"}
             value={data?.totalEmployee}
+            color={'bg-emerald-500'}
             />
           <DashBoardOverview
             icon={<FaBuilding size={25} />}
             text={"Total Departments"}
             value={data?.totalDepartment}
+            color={'bg-orange-500'}
             />
           <DashBoardOverview
             icon={<FaMoneyBillWave size={25} />}
             text={"Total Salary"}
             value={data?.totalSalary?.totalSalary}
+            color={'bg-green-500'}
           />
         </div>
       </div>
@@ -59,20 +67,28 @@ const MyDashBoard = () => {
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 md:gap-2">
           <DashBoardOverview
-            icon={<PiUsersThreeFill size={25} />}
-            text={"Total Employees"}
+            icon={<IoNewspaper  size={25} />}
+            text={"Leave Applied"}
+            value={data?.leaveData?.appliedLeave}
+            color={'bg-green-500'}
           />
           <DashBoardOverview
-            icon={<PiUsersThreeFill size={25} />}
-            text={"Total Employees"}
+            icon={<FaTasks size={25} />}
+            text={"Leave Approved"}
+            value={data?.leaveData?.approvedLeave}
+            color={'bg-emerald-500'}
           />
           <DashBoardOverview
-            icon={<PiUsersThreeFill size={25} />}
-            text={"Total Employees"}
+            icon={<IoTimeSharp  size={25} />}
+            text={"Leave Pending"}
+            value={data?.leaveData?.pendingLeave}
+            color={'bg-yellow-500'}
           />
           <DashBoardOverview
-            icon={<PiUsersThreeFill size={25} />}
-            text={"Total Employees"}
+            icon={<FaTimesCircle size={25} />}
+            text={"Leave Rejected"}
+            value={data?.leaveData?.rejectedLeave}
+            color={'bg-red-500'}
           />
         </div>
       </div>

@@ -2,7 +2,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import Employee from "../models/Employee.js";
-import Department from '../models/Department.js'
+import Department from '../models/Department.js';
+import Leave from '../models/Leave.js';
 
 export const login = async (req, res) => {
   try {
@@ -49,12 +50,26 @@ export const dashboardOverview=async(req,res)=>{
 
     let totalSalary=await Employee.aggregate([
       {$group:{_id:null,totalSalary:{$sum:'$salary'}}}
-    ])
+    ]);
+
+
+    let allLeave=await Leave.find({});
+
+    let approvedLeave=allLeave.filter(item=>item.status==='approved').length;
+    let rejectedLeave=allLeave.filter(item=>item.status==='rejected').length;
+    let pendingLeave=allLeave.filter(item=>item.status==='pending').length;
+
 
     return res.status(200).json({success:true,data:{
       totalEmployee,
       totalDepartment,
-      totalSalary:totalSalary[0]
+      totalSalary:totalSalary[0],
+      leaveData:{
+        appliedLeave:allLeave.length,
+        approvedLeave,
+        rejectedLeave,
+        pendingLeave
+      }
     }});
 
   } catch (er) {

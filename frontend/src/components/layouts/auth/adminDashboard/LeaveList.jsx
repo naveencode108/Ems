@@ -3,7 +3,7 @@ import { getAllLeave } from "../../../../services/actions/leaveApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setLeave } from "../../../../slices/leaveSlice";
 import toast from "react-hot-toast";
-import LeaveStatus from "./LeaveStatus";
+import LeaveStatus from "./Leave/LeaveStatus";
 
 const LeaveList = () => {
   const { leaveData } = useSelector((state) => state.leave);
@@ -54,25 +54,25 @@ const LeaveList = () => {
             {leaveData && leaveData.length > 0 ? (
               leaveData.map((item, index) => (
                 <tr key={index} className="border-b-[1px] border-b-gray-500">
-                  <td className="px-4 py-4 text-sm">{index + 1}</td>
-                  <td className="px-4 py-4 text-sm">
+                  <td className="capitalize px-4 py-4 text-sm">{index + 1}</td>
+                  <td className="capitalize px-4 py-4 text-sm">
                     {item.employeeId?.userId?.name}
                   </td>
-                  <td className="px-4 py-4 text-sm">
+                  <td className="capitalize px-4 py-4 text-sm">
                     {item.employeeId?.departmentId?.name}
                   </td>
-                  <td className="px-4 py-4 text-sm">
+                  <td className="capitalize px-4 py-4 text-sm">
                     {Math.ceil(
                       (new Date(item.endDate) - new Date(item.startDate)) /
                         (1000 * 60 * 60 * 24)
                     )}
                   </td>
-                  <td className="px-4 py-4 text-sm">{item.status}</td>
+                  <td className="capitalize px-4 py-4 text-sm">{item.status}</td>
                   <td className="px-4 py-4 text-sm space-x-2">
                     <button onClick={()=>{
                        setOpen(true); 
                        setLeaveDetails(item)
-                    }} className="px-3 py-2 rounded-full bg-green-500">
+                    }} className="capitalize px-3 py-2 rounded-full bg-green-500">
                       View
                     </button>
                   </td>

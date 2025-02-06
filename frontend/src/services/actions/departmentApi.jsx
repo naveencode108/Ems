@@ -14,8 +14,7 @@ export const addDepartment = async (data) => {
 
     return result;
   } catch (er) {
-    console.log(er);
-    toast.error(er.response.data.message);
+    return {success:false,message:er.response?.data?.message}
   }
 };
 

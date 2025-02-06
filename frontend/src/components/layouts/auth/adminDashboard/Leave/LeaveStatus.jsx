@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeLeaveStatus } from "../../../../services/actions/leaveApi";
+import { changeLeaveStatus } from "../../../../../services/actions/leaveApi";
 import toast from "react-hot-toast";
-import { setLeave } from "../../../../slices/leaveSlice";
+import { setLeave } from "../../../../../slices/leaveSlice";
 
 const LeaveStatus = ({ onClose, data }) => {
   const { leaveData } = useSelector((state) => state.leave);
@@ -12,7 +12,7 @@ const LeaveStatus = ({ onClose, data }) => {
   const handleChange = async (status, id) => {
     let result = await changeLeaveStatus({ leaveId: id, leaveStatus: status });
     if (result?.data?.success) {
-      let newData = leaveData.map(item=>
+      let newData = leaveData.map((item) =>
         item._id === result?.data?.data?._id ? { ...result?.data?.data } : item
       );
       dispatch(setLeave(newData));

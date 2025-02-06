@@ -6,6 +6,7 @@ import { setEmployee } from "../../../../slices/employeeSlice";
 import ViewEmployeeDetails from "./EmployeeAddEdit/ViewEmployeeDetails";
 import EditEmployee from "./EmployeeAddEdit/EditEmployee";
 import ShowSalaryHistory from "./Salary/ShowSalaryHistory";
+import LeaveHistory from "./Leave/LeaveHistory";
 
 const EmployeeList = () => {
   const [showAddEmployee, setshowAddEmployee] = useState(false);
@@ -14,6 +15,7 @@ const EmployeeList = () => {
   const [editEmployee, setEditEmployee] = useState(false);
   const [editEmployeeData, setEditEmployeeData] = useState(null);
   const [showSalary, setShowSalary] = useState(false);
+  const [showLeave,setShowLeave]=useState(false);
 
   const { employeeData } = useSelector((state) => state.employee);
 
@@ -53,6 +55,10 @@ const EmployeeList = () => {
        <ShowSalaryHistory onClose={()=>setShowSalary(false)} data={showEmployeeData}/>
       }
 
+      {showLeave&&
+       <LeaveHistory onClose={()=>setShowLeave(false)} data={showEmployeeData}/>
+      }
+
       <div className="w-full h-[calc(100vh-100px)] overflow-y-auto ">
         <h1 className="text-3xl text-center my-4">Manage Employee</h1>
 
@@ -87,8 +93,8 @@ const EmployeeList = () => {
                 employeeData.map((item, index) => (
                   <tr key={index} className="border-b-[1px] border-b-gray-500">
                     <td className="px-4 py-4 text-sm">{index + 1}</td>
-                    <td className="px-4 py-4 text-sm">{item.userId.name}</td>
-                    <td className="px-4 py-4 text-sm">{item.userId.name}</td>
+                    <td className="px-4 py-4 text-sm">{item?.userId?.name}</td>
+                    <td className="px-4 py-4 text-sm">{item?.userId?.name}</td>
                     <td className="px-4 py-4 text-sm">
                       {item.dateOfBirth.split("T")[0]}
                     </td>
@@ -123,7 +129,10 @@ const EmployeeList = () => {
                       >
                         Salary
                       </button>
-                      <button className="px-3 text-sm py-1 rounded-lg bg-red-500 ">
+                      <button onClick={()=>{
+                         setShowLeave(true);
+                         setShowEmployeeData(item);
+                      }} className="px-3 text-sm py-1 rounded-lg bg-red-500 ">
                         Leave
                       </button>
                     </td>
